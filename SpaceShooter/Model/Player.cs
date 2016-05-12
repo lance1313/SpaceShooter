@@ -11,6 +11,9 @@ namespace SpaceShooter.Model
 		private int health;
 
 		// Animation representing the player
+		private Animation PlayerAnimation;
+
+		// Animation representing the player
 		public Texture2D PlayerTexture;
 
 		// Position of the Player relative to the upper left side of the screen
@@ -51,6 +54,13 @@ namespace SpaceShooter.Model
 		// used to raw any character with specifeied stats inside game.
 		public void Initialize(Texture2D texture, Vector2 position)
 		{
+			PlayerAnimation = animation;
+
+			// Set the starting position of the player around the middle of the screen and to the back
+			Position = position;
+
+			// Set the player to be active
+
 			this.active = true;
 			this.health = 100;
 			this.score = 0;

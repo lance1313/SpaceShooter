@@ -18,6 +18,7 @@ namespace SpaceShooter
 
 		private Player player;
 
+
 		// Keyboard states used to determine key presses
 		private KeyboardState currentKeyboardState;
 		private KeyboardState previousKeyboardState;
