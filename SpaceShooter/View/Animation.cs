@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 // Animation.cs
 //Using declarations
 using System;
@@ -6,14 +6,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpaceShooter
+namespace SpaceShooter.View
 {
 	public class Animation
 	{
 		// The image representing the collection of images used for animation
-		private Texture2D spriteStrip
+		private Texture2D spriteStrip;
 
-		public float SpriteStrip
+		 public Texture2D SpriteStrip
 		{
 			get{ return spriteStrip; }
 			set{ spriteStrip = value; }
@@ -62,7 +62,7 @@ namespace SpaceShooter
 
 		// The color of the frame we will be displaying
 		private Color color;
-		public int Color
+		public Color Color
 		{
 			get{ return color; }
 			set { color = value; }
@@ -92,7 +92,7 @@ namespace SpaceShooter
 
 		// The state of the Animation
 		public bool active;
-		public int Active
+		public bool Active
 		{
 			get{ return active; }
 			set { active = value; }
@@ -100,7 +100,7 @@ namespace SpaceShooter
 
 		// Determines if the animation will keep playing or deactivate after one run
 		public bool looping;
-		public int Looping
+		public bool Looping
 		{
 			get{ return looping; }
 			set { looping = value; }
@@ -108,7 +108,7 @@ namespace SpaceShooter
 
 		// Width of a given frame
 		public Vector2 position;
-		public int Position
+		public Vector2 Position
 		{
 			get{ return position; }
 			set { position = value; }
