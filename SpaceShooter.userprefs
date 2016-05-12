@@ -1,0 +1,13 @@
+﻿<Properties StartupItem="SpaceShooter/SpaceShooter.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SpaceShooter/Controller/Shooter.cs">
+    <Files>
+      <File FileName="SpaceShooter/Model/Player.cs" Line="69" Column="93" />
+      <File FileName="SpaceShooter/Controller/Shooter.cs" Line="19" Column="18" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -1,0 +1,10 @@
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/obj/x86/Debug/SpaceShooter.Icon.ico
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/MonoGame.Framework.dll
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/OpenTK.dll
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/NVorbis.dll
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/OpenTK.dll.config
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/SpaceShooter.exe.mdb
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/SpaceShooter.exe
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/obj/x86/Debug/SpaceShooter.exe
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/obj/x86/Debug/SpaceShooter.exe.mdb
