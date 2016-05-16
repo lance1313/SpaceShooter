@@ -168,11 +168,11 @@ namespace SpaceShooter
 			player.Initialize(playerAnimation, playerPosition);		
 
 			// Load the parallaxing background
-			bgLayer1.Initialize(Content, "bgLayer1", GraphicsDevice.Viewport.Width, -1);
-			bgLayer2.Initialize(Content, "bgLayer2", GraphicsDevice.Viewport.Width, -2);
+			bgLayer1.Initialize(Content, "Texture/bgLayer1", GraphicsDevice.Viewport.Width, -1);
+			bgLayer2.Initialize(Content, "Texture/bgLayer2", GraphicsDevice.Viewport.Width, -2);
 
-			mainBackground = Content.Load<Texture2D>("Animation/mainbackground");
-			projectileTexture = Content.Load<Texture2D>("Animation/laser");
+			mainBackground = Content.Load<Texture2D>("Texture/mainbackground");
+			projectileTexture = Content.Load<Texture2D>("Texture/laser");
 			enemyTexture = Content.Load<Texture2D>("Animation/mineAnimation");
 		}
 
