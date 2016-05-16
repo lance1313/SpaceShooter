@@ -9,13 +9,19 @@ namespace SpaceShooter
 	public class ParalaxingBackground
 	{
 		// The image representing the parallaxing background
-		Texture2D texture;
+		private Texture2D texture;
 
 		// An array of positions of the parallaxing background
-		Vector2 [] positions;
+		private Vector2 [] positions;
 
 		// The speed which the background is moving
-		int speed;
+		private int speed;
+
+		public int Speed
+		{
+			get{return speed;}
+			set{speed = value;}
+		}
 
 		public void Initialize(ContentManager content, String texturePath, int screenWidth, int speed)
 		{

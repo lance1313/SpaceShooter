@@ -34,22 +34,29 @@ namespace SpaceShooter
 		private float playerMoveSpeed;
 
 		// Image used to display the static background
-		Texture2D mainBackground;
+		private Texture2D mainBackground;
 
 		// Parallaxing Layers
-		ParalaxingBackground bgLayer1;
-		ParalaxingBackground bgLayer2;
+		private ParalaxingBackground bgLayer1;
+		private ParalaxingBackground bgLayer2;
 
 		// Enemies
-		Texture2D enemyTexture;
-		List<Enemy> enemies;
+		private Texture2D enemyTexture;
+		private List<Enemy> enemies;
 
 		// The rate at which the enemies appear
-		TimeSpan enemySpawnTime;
-		TimeSpan previousSpawnTime;
+		private TimeSpan enemySpawnTime;
+		private TimeSpan previousSpawnTime;
 
 		// A random number generator
-		Random random;
+		private Random random;
+
+		private Texture2D projectileTexture;
+		private List<Projectile> projectiles;
+
+		// The rate of fire of the player laser
+		private	TimeSpan fireTime;
+		private TimeSpan previousFireTime;
 
 		public SpaceShooter ()
 		{
@@ -115,6 +122,7 @@ namespace SpaceShooter
 			// Set a constant player move speed
 			playerMoveSpeed = 8.0f;
 
+			//initialize background layers
 			bgLayer1 = new ParalaxingBackground();
 			bgLayer2 = new ParalaxingBackground();
 
@@ -129,6 +137,11 @@ namespace SpaceShooter
 
 			// Initialize our random number generator
 			random = new Random();
+
+			projectiles = new List<Projectile>();
+
+			// Set the laser to fire every quarter second
+			fireTime = TimeSpan.FromSeconds(.15f);
 
 			base.Initialize ();
 		}
@@ -159,7 +172,7 @@ namespace SpaceShooter
 			bgLayer2.Initialize(Content, "bgLayer2", GraphicsDevice.Viewport.Width, -2);
 
 			mainBackground = Content.Load<Texture2D>("Animation/mainbackground");
-
+			projectileTexture = Content.Load<Texture2D>("Animation/laser");
 			enemyTexture = Content.Load<Texture2D>("Animation/mineAnimation");
 		}
 
@@ -196,6 +209,16 @@ namespace SpaceShooter
 			// Make sure that the player does not go out of bounds
 			player.Position.X = MathHelper.Clamp(player.Position.X, 0,GraphicsDevice.Viewport.Width - player.Width);
 			player.Position.Y = MathHelper.Clamp(player.Position.Y, 0,GraphicsDevice.Viewport.Height - player.Height);
+
+			// Fire only every interval we set as the fireTime
+			if (gameTime.TotalGameTime - previousFireTime > fireTime)
+			{
+				// Reset our current time
+				previousFireTime = gameTime.TotalGameTime;
+
+				// Add the projectile, but add it to the front and center of the player
+				AddProjectile(player.Position + new Vector2(player.Width / 2, 0));
+			}
 		}
 
 		private void UpdateCollision()
@@ -238,6 +261,15 @@ namespace SpaceShooter
 
 			}
 		}
+
+		private void AddProjectile(Vector2 position)
+		{
+			Projectile projectile = new Projectile(); 
+			projectile.Initialize(GraphicsDevice.Viewport, projectileTexture,position); 
+			projectiles.Add(projectile);
+		}
+
+
 
 		/// <summary>
 		/// Allows the game to run logic such as updating the world,

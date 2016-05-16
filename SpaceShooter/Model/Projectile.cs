@@ -82,8 +82,10 @@ namespace SpaceShooter.Model
 				Active = false;
 		}
 
-		public void Draw()
+		public void Draw(SpriteBatch spriteBatch)
 		{
+			spriteBatch.Draw(Texture, Position, null, Color.White, 0f,
+				new Vector2(Width / 2, Height / 2), 1f, SpriteEffects.None, 0f);
 		}
 	}
 }
