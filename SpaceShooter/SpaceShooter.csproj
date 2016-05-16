@@ -52,6 +52,8 @@
     <Compile Include="Controller\Shooter.cs" />
     <Compile Include="Model\Enemy.cs" />
     <Compile Include="View\Animation.cs" />
+    <Compile Include="Model\Projectile.cs" />
+    <Compile Include="View\ParalaxingBackground.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
