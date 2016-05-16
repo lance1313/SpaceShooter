@@ -29,7 +29,7 @@ namespace SpaceShooter.Model
 
 
 		// State of the Projectile
-		private bool Active
+		public bool Active
 		{
 			get{ return active; }
 			set{ active = value; }

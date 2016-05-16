@@ -262,6 +262,20 @@ namespace SpaceShooter
 			}
 		}
 
+		private void UpdateProjectiles()
+		{
+			// Update the Projectiles
+			for (int i = projectiles.Count - 1; i >= 0; i--) 
+			{
+				projectiles[i].Update();
+
+				if (projectiles[i].Active == false)
+				{
+					projectiles.RemoveAt(i);
+				} 
+			}
+		}
+
 		private void AddProjectile(Vector2 position)
 		{
 			Projectile projectile = new Projectile(); 
@@ -306,6 +320,9 @@ namespace SpaceShooter
 			// Update the collision
 			UpdateCollision();
 
+			// Update the projectiles
+			UpdateProjectiles();
+
 			base.Update (gameTime);
 		}
 
@@ -320,8 +337,7 @@ namespace SpaceShooter
 			// Start drawing
 			spriteBatch.Begin();
 
-			// Draw the Player
-			player.Draw(spriteBatch);
+
 
 			spriteBatch.Draw(mainBackground, Vector2.Zero, Color.White);
 
@@ -329,6 +345,8 @@ namespace SpaceShooter
 			bgLayer1.Draw(spriteBatch);
 			bgLayer2.Draw(spriteBatch);
 
+			// Draw the Player
+			player.Draw(spriteBatch);
 
 			// Draw the Enemies
 			for (int i = 0; i < enemies.Count; i++)
@@ -338,6 +356,13 @@ namespace SpaceShooter
 
 			// Stop drawing
 			spriteBatch.End();
+
+			// Draw the Projectiles
+			for (int i = 0; i < projectiles.Count; i++)
+			{
+				projectiles[i].Draw(spriteBatch);
+			}
+
 
             
 			base.Draw (gameTime);
