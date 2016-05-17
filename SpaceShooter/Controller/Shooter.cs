@@ -2,6 +2,8 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input;
 using SpaceShooter.Model;
@@ -58,11 +60,87 @@ namespace SpaceShooter
 		private	TimeSpan fireTime;
 		private TimeSpan previousFireTime;
 
+		Texture2D explosionTexture;
+		List<Animation> explosions;
+
+		// The sound that is played when a laser is fired
+		SoundEffect laserSound;
+
+		// The sound used when the player or an enemy dies
+		SoundEffect explosionSound;
+
+		// The music played during gameplay
+		Song gameplayMusic;
+
+		//Number that holds the player score
+		int score;
+		// The font used to display UI elements
+		SpriteFont font;
+
 		public SpaceShooter ()
 		{
 			graphics = new GraphicsDeviceManager (this);
 			Content.RootDirectory = "Content";
 
+		}
+
+
+
+		/// <summary>
+		/// Allows the game to perform any initialization it needs to before starting to run.
+		/// This is where it can query for any required services and load any non-graphic
+		/// related content.  Calling base.Initialize will enumerate through any components
+		/// and initialize them as well.
+		/// </summary>
+		protected override void Initialize ()
+		{
+			// TODO: Add your initialization logic here
+			player = new Player ();
+			// Set a constant player move speed
+			playerMoveSpeed = 8.0f;
+
+			//initialize background layers
+			bgLayer1 = new ParalaxingBackground();
+			bgLayer2 = new ParalaxingBackground();
+
+			// Initialize the enemies list
+			enemies = new List<Enemy> ();
+
+			// Set the time keepers to zero
+			previousSpawnTime = TimeSpan.Zero;
+
+			// Used to determine how fast enemy respawns
+			enemySpawnTime = TimeSpan.FromSeconds(1.0f);
+
+			// Initialize our random number generator
+			random = new Random();
+
+			projectiles = new List<Projectile>();
+
+			// Set the laser to fire every quarter second
+			fireTime = TimeSpan.FromSeconds(.15f);
+
+			explosions = new List<Animation>();
+
+			//Set player's score to zero
+			score = 0;
+
+			base.Initialize ();
+		}
+
+		private void PlayMusic(Song song)
+		{
+			// Due to the way the MediaPlayer plays music,
+			// we have to catch the exception. Music will play when the game is not tethered
+			try
+			{
+				// Play the music
+				MediaPlayer.Play(song);
+
+				// Loop the currently playing song
+				MediaPlayer.IsRepeating = true;
+			}
+			catch { }
 		}
 
 		private void AddEnemy()
@@ -104,46 +182,28 @@ namespace SpaceShooter
 
 				if (enemies[i].Active == false)
 				{
-					enemies.RemoveAt(i);
+					// If not active and health <= 0
+					if (enemies[i].Health <= 0)
+					{
+						// Add an explosion
+						AddExplosion(enemies[i].Position);
+						// Play the explosion sound
+						explosionSound.Play();
+						//Add to the player's score
+						score += enemies[i].Value;
+						enemies.RemoveAt(i);
+					}
 				} 
 			}
+
+
 		}
 
-		/// <summary>
-		/// Allows the game to perform any initialization it needs to before starting to run.
-		/// This is where it can query for any required services and load any non-graphic
-		/// related content.  Calling base.Initialize will enumerate through any components
-		/// and initialize them as well.
-		/// </summary>
-		protected override void Initialize ()
+		private void AddExplosion(Vector2 position)
 		{
-			// TODO: Add your initialization logic here
-			player = new Player ();
-			// Set a constant player move speed
-			playerMoveSpeed = 8.0f;
-
-			//initialize background layers
-			bgLayer1 = new ParalaxingBackground();
-			bgLayer2 = new ParalaxingBackground();
-
-			// Initialize the enemies list
-			enemies = new List<Enemy> ();
-
-			// Set the time keepers to zero
-			previousSpawnTime = TimeSpan.Zero;
-
-			// Used to determine how fast enemy respawns
-			enemySpawnTime = TimeSpan.FromSeconds(1.0f);
-
-			// Initialize our random number generator
-			random = new Random();
-
-			projectiles = new List<Projectile>();
-
-			// Set the laser to fire every quarter second
-			fireTime = TimeSpan.FromSeconds(.15f);
-
-			base.Initialize ();
+			Animation explosion = new Animation();
+			explosion.Initialize(explosionTexture,position, 134, 134, 12, 45, Color.White, 1f,false);
+			explosions.Add(explosion);
 		}
 
 		/// <summary>
@@ -174,6 +234,20 @@ namespace SpaceShooter
 			mainBackground = Content.Load<Texture2D>("Texture/mainbackground");
 			projectileTexture = Content.Load<Texture2D>("Texture/laser");
 			enemyTexture = Content.Load<Texture2D>("Animation/mineAnimation");
+			explosionTexture = Content.Load<Texture2D>("Animation/explosion");
+
+			// Load the music
+			gameplayMusic = Content.Load<Song>("Sound/gameMusic.mp3");
+
+			// Load the laser and explosion sound effect
+			laserSound = Content.Load<SoundEffect>("Sound/laserFire.wav");
+			explosionSound = Content.Load<SoundEffect>("Sound/explosion.wav");
+
+			// Start the music right away
+			PlayMusic(gameplayMusic);
+
+			// Load the score font
+			font = Content.Load<SpriteFont>("gameFont");
 		}
 
 		private void UpdatePlayer(GameTime gameTime)
@@ -218,6 +292,28 @@ namespace SpaceShooter
 
 				// Add the projectile, but add it to the front and center of the player
 				AddProjectile(player.Position + new Vector2(player.Width / 2, 0));
+
+				// Play the laser sound
+				laserSound.Play();
+			}
+
+			// reset score if player health goes to zero
+			if (player.Health <= 0)
+			{
+				player.Health = 100;
+				score = 0;
+			}
+		}
+
+		private void UpdateExplosions(GameTime gameTime)
+		{
+			for (int i = explosions.Count - 1; i >= 0; i--)
+			{
+				explosions[i].Update(gameTime);
+				if (explosions[i].Active == false)
+				{
+					explosions.RemoveAt(i);
+				}
 			}
 		}
 
@@ -346,6 +442,9 @@ namespace SpaceShooter
 			// Update the projectiles
 			UpdateProjectiles();
 
+			// Update the explosions
+			UpdateExplosions(gameTime);
+
 			base.Update (gameTime);
 		}
 
@@ -383,6 +482,17 @@ namespace SpaceShooter
 			{
 				projectiles[i].Draw(spriteBatch);
 			}
+
+			// Draw the explosions
+			for (int i = 0; i < explosions.Count; i++)
+			{
+				explosions[i].Draw(spriteBatch);
+			}
+
+			// Draw the score
+			spriteBatch.DrawString(font, "score: " + score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.White);
+			// Draw the player health
+			spriteBatch.DrawString(font, "health: " + player.Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y + 30), Color.White);
 
 
 
