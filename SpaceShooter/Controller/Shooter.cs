@@ -237,17 +237,17 @@ namespace SpaceShooter
 			explosionTexture = Content.Load<Texture2D>("Animation/explosion");
 
 			// Load the music
-			gameplayMusic = Content.Load<Song>("Sound/gameMusic.mp3");
+			gameplayMusic = Content.Load<Song>("Sound/gameMusic");
 
 			// Load the laser and explosion sound effect
-			laserSound = Content.Load<SoundEffect>("Sound/laserFire.wav");
-			explosionSound = Content.Load<SoundEffect>("Sound/explosion.wav");
+			laserSound = Content.Load<SoundEffect>("Sound/laserFire");
+			explosionSound = Content.Load<SoundEffect>("Sound/explosion");
 
 			// Start the music right away
 			PlayMusic(gameplayMusic);
 
 			// Load the score font
-			font = Content.Load<SpriteFont>("gameFont");
+			font = Content.Load<SpriteFont>("Font/gameFont");
 		}
 
 		private void UpdatePlayer(GameTime gameTime)
