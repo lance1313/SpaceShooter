@@ -260,6 +260,29 @@ namespace SpaceShooter
 				}
 
 			}
+
+			// Projectile vs Enemy Collision
+			for (int i = 0; i < projectiles.Count; i++)
+			{
+				for (int j = 0; j < enemies.Count; j++)
+				{
+					// Create the rectangles we need to determine if we collided with each other
+					rectangle1 = new Rectangle((int)projectiles[i].Position.X - 
+						projectiles[i].Width / 2,(int)projectiles[i].Position.Y - 
+						projectiles[i].Height / 2,projectiles[i].Width, projectiles[i].Height);
+
+					rectangle2 = new Rectangle((int)enemies[j].Position.X - enemies[j].Width / 2,
+						(int)enemies[j].Position.Y - enemies[j].Height / 2,
+						enemies[j].Width, enemies[j].Height);
+
+					// Determine if the two objects collided with each other
+					if (rectangle1.Intersects(rectangle2))
+					{
+						enemies[j].Health -= projectiles[i].damage;
+						projectiles[i].Active = false;
+					}
+				}
+			}
 		}
 
 		private void UpdateProjectiles()
@@ -354,8 +377,6 @@ namespace SpaceShooter
 				enemies[i].Draw(spriteBatch);
 			}
 
-			// Stop drawing
-			spriteBatch.End();
 
 			// Draw the Projectiles
 			for (int i = 0; i < projectiles.Count; i++)
@@ -364,7 +385,9 @@ namespace SpaceShooter
 			}
 
 
-            
+
+			// Stop drawing
+			spriteBatch.End();
 			base.Draw (gameTime);
 		}
 	}
