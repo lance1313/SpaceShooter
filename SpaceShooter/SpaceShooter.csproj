@@ -54,6 +54,7 @@
     <Compile Include="View\Animation.cs" />
     <Compile Include="Model\Projectile.cs" />
     <Compile Include="View\ParalaxingBackground.cs" />
+    <Compile Include="Model\FriceBeam.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />

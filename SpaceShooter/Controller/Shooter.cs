@@ -77,6 +77,13 @@ namespace SpaceShooter
 		// The font used to display UI elements
 		SpriteFont font;
 
+		Texture2D FriceTexture;
+		List<Projectile> Frice;
+
+		// The rate of fire of the player laser
+		TimeSpan fireTime2;
+		TimeSpan previousFireTime2;
+
 		public SpaceShooter ()
 		{
 			graphics = new GraphicsDeviceManager (this);
@@ -119,6 +126,11 @@ namespace SpaceShooter
 
 			// Set the laser to fire every quarter second
 			fireTime = TimeSpan.FromSeconds(.15f);
+
+			Frice = new List<Projectile>();
+
+			// Set the laser to fire every quarter second
+			fireTime2 = TimeSpan.FromSeconds(.15f);
 
 			explosions = new List<Animation>();
 
@@ -233,11 +245,12 @@ namespace SpaceShooter
 
 			mainBackground = Content.Load<Texture2D>("Texture/mainbackground");
 			projectileTexture = Content.Load<Texture2D>("Texture/laser");
+			FriceTexture = Content.Load<Texture2D>("Texture/FriceBeam");
 			enemyTexture = Content.Load<Texture2D>("Animation/mineAnimation");
 			explosionTexture = Content.Load<Texture2D>("Animation/explosion");
 
 			// Load the music
-			gameplayMusic = Content.Load<Song>("Sound/gameMusic");
+			//gameplayMusic = Content.Load<Song>("Sound/gameMusic");
 
 			// Load the laser and explosion sound effect
 			laserSound = Content.Load<SoundEffect>("Sound/laserFire");
@@ -295,6 +308,16 @@ namespace SpaceShooter
 
 				// Play the laser sound
 				laserSound.Play();
+			}
+
+			// Fire only every interval we set as the fireTime
+			if (currentKeyboardState.IsKeyDown(Keys.Space))
+			{
+				// Reset our current time
+				previousFireTime = gameTime.TotalGameTime;
+
+				// Add the projectile, but add it to the front and center of the player
+				AddFriceBeam(player.Position + new Vector2(player.Width / 2, 0));
 			}
 
 			// reset score if player health goes to zero
@@ -378,6 +401,8 @@ namespace SpaceShooter
 						projectiles[i].Active = false;
 					}
 				}
+
+
 			}
 		}
 
@@ -393,9 +418,27 @@ namespace SpaceShooter
 					projectiles.RemoveAt(i);
 				} 
 			}
+
+			// Update the Projectiles
+			for (int i = Frice.Count - 1; i >= 0; i--) 
+			{
+				Frice[i].Update();
+
+				if (Frice[i].Active == false)
+				{
+					Frice.RemoveAt(i);
+				} 
+			}
 		}
 
 		private void AddProjectile(Vector2 position)
+		{
+			Projectile projectile = new Projectile(); 
+			projectile.Initialize(GraphicsDevice.Viewport, projectileTexture,position); 
+			projectiles.Add(projectile);
+		}
+
+		private void AddFriceBeam(Vector2 position)
 		{
 			Projectile projectile = new Projectile(); 
 			projectile.Initialize(GraphicsDevice.Viewport, projectileTexture,position); 
@@ -481,7 +524,21 @@ namespace SpaceShooter
 			for (int i = 0; i < projectiles.Count; i++)
 			{
 				projectiles[i].Draw(spriteBatch);
+
+
 			}
+
+
+			// Draw the Projectiles
+			for (int i = 0; i < Frice.Count; i++)
+			{
+				Frice[i].Draw(spriteBatch);
+
+
+			}
+
+
+
 
 			// Draw the explosions
 			for (int i = 0; i < explosions.Count; i++)

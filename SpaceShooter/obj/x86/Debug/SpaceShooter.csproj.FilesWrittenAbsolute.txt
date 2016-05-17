@@ -26,3 +26,4 @@
 /Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/MonoGame.Framework.dll
 /Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/OpenTK.dll
 /Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/NVorbis.dll
+/Users/jlin3312/Documents/Game Dev./SpaceShooter/SpaceShooter/bin/Debug/Content/Texture/FriceBeam.xnb
