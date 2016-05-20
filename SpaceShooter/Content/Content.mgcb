@@ -175,7 +175,7 @@
 /processorParam:Quality=Best
 /build:Sound/gameMusic.mp3
 
-#begin Texture/FriceBeam.png
+#begin Texture/friceBeam.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -185,5 +185,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Texture/FriceBeam.png
+/build:Texture/friceBeam.png
 

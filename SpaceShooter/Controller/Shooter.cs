@@ -78,7 +78,7 @@ namespace SpaceShooter
 		SpriteFont font;
 
 		Texture2D FriceTexture;
-		List<Projectile> Frice;
+		List<FriceBeam> Frice;
 
 		// The rate of fire of the player laser
 		TimeSpan fireTime2;
@@ -127,7 +127,7 @@ namespace SpaceShooter
 			// Set the laser to fire every quarter second
 			fireTime = TimeSpan.FromSeconds(.15f);
 
-			Frice = new List<Projectile>();
+			Frice = new List<FriceBeam>();
 
 			// Set the laser to fire every quarter second
 			fireTime2 = TimeSpan.FromSeconds(.15f);
@@ -245,7 +245,7 @@ namespace SpaceShooter
 
 			mainBackground = Content.Load<Texture2D>("Texture/mainbackground");
 			projectileTexture = Content.Load<Texture2D>("Texture/laser");
-			FriceTexture = Content.Load<Texture2D>("Texture/FriceBeam");
+			FriceTexture = Content.Load<Texture2D>("Texture/friceBeam");
 			enemyTexture = Content.Load<Texture2D>("Animation/mineAnimation");
 			explosionTexture = Content.Load<Texture2D>("Animation/explosion");
 
@@ -311,7 +311,7 @@ namespace SpaceShooter
 			}
 
 			// Fire only every interval we set as the fireTime
-			if (currentKeyboardState.IsKeyDown(Keys.Space))
+			if (currentKeyboardState.IsKeyDown(Keys.Space) && previousFireTime > fireTime2)
 			{
 				// Reset our current time
 				previousFireTime = gameTime.TotalGameTime;
@@ -407,6 +407,31 @@ namespace SpaceShooter
 
 				}
 
+				for (int index = 0; index < Frice.Count; index++)
+				{
+					for (int j = 0; j < enemies.Count; j++) 
+					{
+						// Create the rectangles we need to determine if we collided with each other
+						rectangle1 = new Rectangle ((int)Frice [index].Position.X -
+						Frice [index].Width / 2, (int)Frice [index].Position.Y -
+						Frice [index].Height / 2, Frice [index].Width, Frice [index].Height);
+
+						rectangle2 = new Rectangle ((int)enemies [j].Position.X - enemies [j].Width / 2,
+							(int)enemies [j].Position.Y - enemies [j].Height / 2,
+							enemies [j].Width, enemies [j].Height);
+
+						// Determine if the two objects collided with each other
+						if (rectangle1.Intersects (rectangle2)) {
+							enemies [j].Health -= Frice [i].damage;
+
+							Frice [i].Active = false;
+						}
+
+					  }
+
+					}
+
+
 
 			}
 		}
@@ -445,9 +470,9 @@ namespace SpaceShooter
 
 		private void AddFriceBeam(Vector2 position)
 		{
-			Projectile projectile = new Projectile(); 
-			projectile.Initialize(GraphicsDevice.Viewport, projectileTexture,position); 
-			projectiles.Add(projectile);
+			FriceBeam friceBeam = new FriceBeam(); 
+			friceBeam.Initialize(GraphicsDevice.Viewport, FriceTexture,position); 
+			Frice.Add(friceBeam);
 		}
 
 
