@@ -202,7 +202,7 @@ namespace SpaceShooter
 						// Play the explosion sound
 						explosionSound.Play();
 						//Add to the player's score
-						score += enemies[i].Value;
+						score += 5;
 						enemies.RemoveAt(i);
 					}
 				} 
@@ -373,6 +373,7 @@ namespace SpaceShooter
 					// destroy it
 					enemies[i].Health = 0;
 
+
 					// If the player health is less than zero we died
 					if (player.Health <= 0)
 						player.Active = false; 
@@ -398,8 +399,12 @@ namespace SpaceShooter
 					if (rectangle1.Intersects(rectangle2))
 					{
 						enemies[j].Health -= projectiles[i].damage;
+
 						projectiles[i].Active = false;
 					}
+
+
+
 				}
 
 
