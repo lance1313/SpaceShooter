@@ -80,7 +80,7 @@ namespace SpaceShooter
 		Texture2D FriceTexture;
 		List<FriceBeam> Frice;
 
-		// The rate of fire of the player laser
+		// The rate of fire of the player Frice beam fires
 		TimeSpan fireTime2;
 		TimeSpan previousFireTime2;
 
@@ -130,7 +130,7 @@ namespace SpaceShooter
 			Frice = new List<FriceBeam>();
 
 			// Set the laser to fire every quarter second
-			fireTime2 = TimeSpan.FromSeconds(.15f);
+			fireTime2 = TimeSpan.FromSeconds(.5f);
 
 			explosions = new List<Animation>();
 
@@ -294,8 +294,8 @@ namespace SpaceShooter
 			}
 
 			// Make sure that the player does not go out of bounds
-			player.Position.X = MathHelper.Clamp(player.Position.X, 0,GraphicsDevice.Viewport.Width - player.Width);
-			player.Position.Y = MathHelper.Clamp(player.Position.Y, 0,GraphicsDevice.Viewport.Height - player.Height);
+			player.Position.X = MathHelper.Clamp(player.Position.X, player.Width/2,GraphicsDevice.Viewport.Width - player.Width);
+			player.Position.Y = MathHelper.Clamp(player.Position.Y, player.Height/2,GraphicsDevice.Viewport.Height - player.Height);
 
 			// Fire only every interval we set as the fireTime
 			if (gameTime.TotalGameTime - previousFireTime > fireTime)
@@ -311,10 +311,10 @@ namespace SpaceShooter
 			}
 
 			// Fire only every interval we set as the fireTime
-			if (currentKeyboardState.IsKeyDown(Keys.Space) && previousFireTime > fireTime2)
+			if (currentKeyboardState.IsKeyDown(Keys.Space) && gameTime.TotalGameTime - previousFireTime2 > fireTime2)
 			{
 				// Reset our current time
-				previousFireTime = gameTime.TotalGameTime;
+				previousFireTime2 = gameTime.TotalGameTime;
 
 				// Add the projectile, but add it to the front and center of the player
 				AddFriceBeam(player.Position + new Vector2(player.Width / 2, 0));
@@ -382,58 +382,57 @@ namespace SpaceShooter
 			}
 
 			// Projectile vs Enemy Collision
-			for (int i = 0; i < projectiles.Count; i++)
-			{
-				for (int j = 0; j < enemies.Count; j++)
-				{
+			for (int i = 0; i < projectiles.Count; i++) {
+				for (int j = 0; j < enemies.Count; j++) {
 					// Create the rectangles we need to determine if we collided with each other
-					rectangle1 = new Rectangle((int)projectiles[i].Position.X - 
-						projectiles[i].Width / 2,(int)projectiles[i].Position.Y - 
-						projectiles[i].Height / 2,projectiles[i].Width, projectiles[i].Height);
+					rectangle1 = new Rectangle ((int)projectiles [i].Position.X -
+					projectiles [i].Width / 2, (int)projectiles [i].Position.Y -
+					projectiles [i].Height / 2, projectiles [i].Width, projectiles [i].Height);
 
-					rectangle2 = new Rectangle((int)enemies[j].Position.X - enemies[j].Width / 2,
-						(int)enemies[j].Position.Y - enemies[j].Height / 2,
-						enemies[j].Width, enemies[j].Height);
+					rectangle2 = new Rectangle ((int)enemies [j].Position.X - enemies [j].Width / 2,
+						(int)enemies [j].Position.Y - enemies [j].Height / 2,
+						enemies [j].Width, enemies [j].Height);
 
 					// Determine if the two objects collided with each other
-					if (rectangle1.Intersects(rectangle2))
-					{
-						enemies[j].Health -= projectiles[i].damage;
+					if (rectangle1.Intersects (rectangle2)) {
+						enemies [j].Health -= projectiles [i].damage;
 
-						projectiles[i].Active = false;
+						projectiles [i].Active = false;
 					}
 
 
 
 				}
 
-				for (int index = 0; index < Frice.Count; index++)
-				{
-					for (int j = 0; j < enemies.Count; j++) 
-					{
-						// Create the rectangles we need to determine if we collided with each other
-						rectangle1 = new Rectangle ((int)Frice [index].Position.X -
-						Frice [index].Width / 2, (int)Frice [index].Position.Y -
-						Frice [index].Height / 2, Frice [index].Width, Frice [index].Height);
+			}
+				// Projectile vs Enemy Collision
+			for (int i = 0; i < Frice.Count; i++) {
+				for (int j = 0; j < enemies.Count; j++) {
+					// Create the rectangles we need to determine if we collided with each other
+					rectangle1 = new Rectangle ((int)Frice [i].Position.X -
+					Frice [i].Width / 2, (int)Frice [i].Position.Y -
+					Frice [i].Height / 2, Frice [i].Width, Frice [i].Height);
 
-						rectangle2 = new Rectangle ((int)enemies [j].Position.X - enemies [j].Width / 2,
-							(int)enemies [j].Position.Y - enemies [j].Height / 2,
-							enemies [j].Width, enemies [j].Height);
+					rectangle2 = new Rectangle ((int)enemies [j].Position.X - enemies [j].Width / 2,
+						(int)enemies [j].Position.Y - enemies [j].Height / 2,
+						enemies [j].Width, enemies [j].Height);
 
-						// Determine if the two objects collided with each other
-						if (rectangle1.Intersects (rectangle2)) {
-							enemies [j].Health -= Frice [i].damage;
+					// Determine if the two objects collided with each other
+					if (rectangle1.Intersects (rectangle2)) {
+						enemies [j].Health -= Frice [i].damage;
 
-							Frice [i].Active = false;
-						}
-
-					  }
-
+						Frice [i].Active = false;
 					}
 
 
 
+				}
+
+
+
 			}
+
+			
 		}
 
 		private void UpdateProjectiles()
@@ -449,6 +448,11 @@ namespace SpaceShooter
 				} 
 			}
 
+
+		}
+
+		private void updateFrieBeam()
+		{
 			// Update the Projectiles
 			for (int i = Frice.Count - 1; i >= 0; i--) 
 			{
@@ -459,7 +463,9 @@ namespace SpaceShooter
 					Frice.RemoveAt(i);
 				} 
 			}
+
 		}
+
 
 		private void AddProjectile(Vector2 position)
 		{
@@ -514,6 +520,8 @@ namespace SpaceShooter
 
 			// Update the projectiles
 			UpdateProjectiles();
+
+			updateFrieBeam ();
 
 			// Update the explosions
 			UpdateExplosions(gameTime);

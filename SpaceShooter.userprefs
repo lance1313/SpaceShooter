@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="SpaceShooter/SpaceShooter.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SpaceShooter/Controller/Shooter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SpaceShooter/Model/FriceBeam.cs">
     <Files>
       <File FileName="SpaceShooter/Model/Player.cs" Line="1" Column="1" />
-      <File FileName="SpaceShooter/Controller/Shooter.cs" Line="314" Column="50" />
+      <File FileName="SpaceShooter/Controller/Shooter.cs" Line="129" Column="4" />
       <File FileName="SpaceShooter/Model/Projectile.cs" Line="1" Column="1" />
       <File FileName="SpaceShooter/Model/FriceBeam.cs" Line="1" Column="1" />
       <File FileName="SpaceShooter/Model/Enemy.cs" Line="1" Column="1" />
